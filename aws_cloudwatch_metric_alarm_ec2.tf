@@ -2,7 +2,7 @@
 resource "aws_cloudwatch_metric_alarm" "aws_cloudwatch_metric_alarm_ec2_NamingRule_ec2_CPUUtilization" {
   count   = length(var.InstanceId)
   
-  alarm_name                = "NamingRule_ec2_CPUUtilization"
+  alarm_name                = "NamingRule_${var.InstanceId[count.index]}_ec2_CPUUtilization"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "1"
   metric_name               = "CPUUtilization"
@@ -27,6 +27,10 @@ resource "aws_cloudwatch_metric_alarm" "aws_cloudwatch_metric_alarm_ec2_NamingRu
   dimensions = {
         InstanceId = "${var.InstanceId[count.index]}"
   }
+  
+  tags = {
+    Name = "${var.InstanceId[count.index]}.CPUUtilization"
+  }
 
 }
 
@@ -34,7 +38,7 @@ resource "aws_cloudwatch_metric_alarm" "aws_cloudwatch_metric_alarm_ec2_NamingRu
 //StatusCheckFailed
 resource "aws_cloudwatch_metric_alarm" "aws_cloudwatch_metric_alarm_ec2_NamingRule_ec2_StatusCheckFailed" {
   count                     = length(var.InstanceId)
-  alarm_name                = "NamingRule_ec2_StatusCheckFailed"
+  alarm_name                = "NamingRule_${var.InstanceId[count.index]}_ec2_StatusCheckFailed"
   comparison_operator       = "LessThanThreshold"
   evaluation_periods        = "1"
   metric_name               = "StatusCheckFailed"
@@ -52,6 +56,10 @@ resource "aws_cloudwatch_metric_alarm" "aws_cloudwatch_metric_alarm_ec2_NamingRu
   dimensions = {
         InstanceId = "${var.InstanceId[count.index]}"
   }
+  
+  tags = {
+    Name = "${var.InstanceId[count.index]}.StatusCheckFailed"
+  }
 
 }
 
@@ -59,7 +67,7 @@ resource "aws_cloudwatch_metric_alarm" "aws_cloudwatch_metric_alarm_ec2_NamingRu
 //Memory
 resource "aws_cloudwatch_metric_alarm" "aws_cloudwatch_metric_alarm_ec2_NamingRule_ec2_memory" {
   count   = length(var.InstanceId)
-  alarm_name = "NamingRule_ec2_Memory"
+  alarm_name = "NamingRule_${var.InstanceId[count.index]}_ec2_Memory"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name = "mem_used_percent"
@@ -76,12 +84,9 @@ resource "aws_cloudwatch_metric_alarm" "aws_cloudwatch_metric_alarm_ec2_NamingRu
     InstanceType = "${var.InstanceType[count.index]}"
   }
 
-  # tags = {
-  #   Environment = "${var.env}"
-  #   Project = "${var.project}"
-  #   Provisioner="cloudwatch"
-  #   Name = "${local.name}.memory"
-  # }
+  tags = {
+    Name = "${var.InstanceId[count.index]}.memory"
+  }
 }
 
 
@@ -89,7 +94,7 @@ resource "aws_cloudwatch_metric_alarm" "aws_cloudwatch_metric_alarm_ec2_NamingRu
 resource "aws_cloudwatch_metric_alarm" "aws_cloudwatch_metric_alarm_ec2_NamingRule_ec2_diskusage" {
   count   = length(var.InstanceId)
   
-  alarm_name = "NamingRule_ec2_DiskUsage"
+  alarm_name = "NamingRule_${var.InstanceId[count.index]}_ec2_DiskUsage"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = "1"
   metric_name = "disk_used_percent"
@@ -115,4 +120,8 @@ resource "aws_cloudwatch_metric_alarm" "aws_cloudwatch_metric_alarm_ec2_NamingRu
   #   Provisioner="cloudwatch"
   #   Name = "${local.name}.memory"
   # }
+  
+  tags = {
+    Name = "${var.InstanceId[count.index]}.diskusage"
+  }
 }
